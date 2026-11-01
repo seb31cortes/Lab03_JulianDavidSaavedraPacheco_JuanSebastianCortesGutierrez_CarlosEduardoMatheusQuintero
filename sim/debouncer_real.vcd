@@ -1,0 +1,61 @@
+$date
+	Sun Nov 01 17:30:44 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_debouncer $end
+$var reg 1 ! btn $end
+$upscope $end
+$scope module tb_debouncer $end
+$var wire 1 " stable $end
+$upscope $end
+$scope module tb_debouncer $end
+$var wire 1 # pulse $end
+$upscope $end
+$scope module tb_debouncer $end
+$var integer 32 $ pulses [31:0] $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 $
+0#
+0"
+0!
+$end
+#40000
+1!
+#10000032000
+0!
+#20000064000
+1!
+#30000076000
+1#
+1"
+#30000084000
+0#
+b1 $
+#40000128000
+0!
+#50000120000
+1!
+#60000152000
+0!
+#70000164000
+0"
+#70000184000
+1!
+#80000196000
+1#
+1"
+#80000204000
+0#
+b10 $
+#80000216000

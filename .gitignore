@@ -1,0 +1,9 @@
+/build/
+/.Xil/
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+__pycache__/
+/dfx_runtime.txt

@@ -1,0 +1,5 @@
+# Conservar bytes: manifiestos SHA-256 y referencia original sin normalizacion.
+* -text
+*.bit binary
+*.png binary
+*.jpg binary
