@@ -125,33 +125,33 @@ El driver transmite `0x40` (incremento automático), `0xC0` seguido de los cuatr
 
 ## Simulación reproducible
 
-La siguiente tabla resume los testbenches, los archivos de simulación generados y los resultados obtenidos.
+La siguiente tabla resume los testbenches, los archivos de simulación generados y los resultados obtenidos. Las entradas, el procesamiento, las salidas y el desarrollo de cada prueba se detallan en el [índice de simulaciones](sim/README.md).
 
 | Testbench | Ejecutable / traza | Resultado |
 |---|---|---|
-| [tb_alu.v](sim/tb_alu.v) | `tb_alu.vvp` / `alu.vcd` | **PASS:** 1.024 casos: 4 operaciones × 16 valores de A × 16 de B. |
-| [tb_reg_bank.v](sim/tb_reg_bank.v) | `tb_reg_bank.vvp` / `reg_bank.vcd` | **PASS:** 64 escrituras y 1.040 pares de lectura; retención, aislamiento y escritura síncrona. |
-| [tb_controls.v](sim/tb_controls.v) | `tb_controls.vvp` / `controls.vcd` | **PASS:** dirección, 16 pares recorridos dos veces, indicadores y captura/retención de valor y formato. |
-| [tb_debouncer.v](sim/tb_debouncer.v) | `tb_debouncer_real.vvp` / `debouncer_real.vcd` | **PASS:** N=1.250.000, el valor usado en la FPGA; rebotes, umbral de 10 ms, pulsación mantenida y nueva pulsación. |
-| [tb_display_formatter.v](sim/tb_display_formatter.v) | `tb_display_formatter.vvp` / `display_formatter.vcd` | **PASS:** 64 valores decimales con signo (−32…31) y 16 patrones binarios. |
-| [tb_tm1637.v](sim/tb_tm1637.v) | `tb_tm1637.vvp` / `tm1637.vcd` | **PASS:** siete tramas, comandos, bits, ACK/NACK, coherencia y recuperación. |
-| [tb_top.v](sim/tb_top.v) | `tb_top.vvp` / `top.vcd` | **PASS:** cuatro registros, 16 pares × 4 operaciones, **197 comprobaciones**, display serial y retención. |
+| [tb_alu.v](sim/alu/tb_alu.v) | `tb_alu.vvp` / `alu.vcd` | **PASS:** 1.024 casos: 4 operaciones × 16 valores de A × 16 de B. |
+| [tb_reg_bank.v](sim/reg_bank/tb_reg_bank.v) | `tb_reg_bank.vvp` / `reg_bank.vcd` | **PASS:** 64 escrituras y 1.040 pares de lectura; retención, aislamiento y escritura síncrona. |
+| [tb_controls.v](sim/controls/tb_controls.v) | `tb_controls.vvp` / `controls.vcd` | **PASS:** dirección, 16 pares recorridos dos veces, indicadores y captura/retención de valor y formato. |
+| [tb_debouncer.v](sim/debouncer/tb_debouncer.v) | `tb_debouncer_real.vvp` / `debouncer_real.vcd` | **PASS:** N=1.250.000, el valor usado en la FPGA; rebotes, umbral de 10 ms, pulsación mantenida y nueva pulsación. |
+| [tb_display_formatter.v](sim/display_formatter/tb_display_formatter.v) | `tb_display_formatter.vvp` / `display_formatter.vcd` | **PASS:** 64 valores decimales con signo (−32…31) y 16 patrones binarios. |
+| [tb_tm1637.v](sim/tm1637/tb_tm1637.v) | `tb_tm1637.vvp` / `tm1637.vcd` | **PASS:** siete tramas, comandos, bits, ACK/NACK, coherencia y recuperación. |
+| [tb_top.v](sim/top/tb_top.v) | `tb_top.vvp` / `top.vcd` | **PASS:** cuatro registros, 16 pares × 4 operaciones, **197 comprobaciones**, display serial y retención. |
 
 La integración carga **R0=5, R1=3, R2=10 y R3=15** y usa un reloj simulado de 4 MHz y cuatro muestras de antirrebote. Son parámetros del testbench; los valores por defecto de FPGA se conservan. Las pruebas físicas emplean **R0=15 y R1=1**.
 
 ### Capturas de GTKWave
 
-Sesiones: [vista general](sim/top.gtkw), [operaciones](sim/top_operaciones.gtkw) y [TM1637](sim/tm1637.gtkw).
+La interpretación de las señales se amplía en las descripciones de [integración](sim/top/README.md) y del [driver TM1637](sim/tm1637/README.md).
 
-![GTKWave: operaciones y resultado almacenado](sim/capturas/top_operaciones.jpg)
+![GTKWave: operaciones y resultado almacenado](sim/top/capturas/top_operaciones.jpg)
 
 En `stage=2`, A=5 y B=3 producen 8, 2, 1 y 7. `alu_out` es el cálculo instantáneo; `result_q` y `binary_q` se capturan con BTN3. `received` contiene los segmentos reconstruidos desde el bus del display.
 
-![GTKWave: integración y retención](sim/capturas/top_general.jpg)
+![GTKWave: integración y retención](sim/top/capturas/top_general.jpg)
 
 La vista general incluye carga y recorrido de parejas. Las etapas 4 a 8 comprueban retención tras escritura, BTN3 mantenido, rebotes, independencia de switches y eventos simultáneos. Sus condiciones se verifican automáticamente en `tb_top.v`.
 
-![GTKWave: TM1637 y ACK/NACK](sim/capturas/tm1637.jpg)
+![GTKWave: TM1637 y ACK/NACK](sim/tm1637/capturas/tm1637.jpg)
 
 La prueba incluye recepción correcta, NACK temprano, recuperación y ausencia simulada del display. `ack_err` conserva el fallo de la trama afectada y vuelve a cero tras una trama correcta.
 
@@ -178,11 +178,14 @@ Avances Práctica 3/
 ├── src/                         13 módulos Verilog del diseño presentado
 ├── constraints/zybo_z7.xdc      Pines conservados
 ├── sim/
-│   ├── tb_*.v                   Siete testbenches
-│   ├── *.vvp / *.vcd            Ejecutables y ondas
-│   ├── *.gtkw                   Sesiones de GTKWave
-│   ├── simulacion.txt           Registro de resultados
-│   └── capturas/                Capturas de GTKWave
+│   ├── README.md                Índice y alcance de las simulaciones
+│   ├── alu/                     Testbench, VVP, VCD y explicación de la ALU
+│   ├── reg_bank/                Testbench, VVP, VCD y explicación del banco
+│   ├── controls/                Testbench, VVP, VCD y explicación de controles
+│   ├── debouncer/               Prueba con el umbral real de antirrebote
+│   ├── display_formatter/       Conversión decimal y binaria a segmentos
+│   ├── tm1637/                  Protocolo serial, ACK/NACK y capturas previas
+│   └── top/                     Integración completa y capturas previas
 └── evidencias/
     ├── explicacion_general.mp4
     ├── 01_suma/                 video.mp4 + README.md
