@@ -69,7 +69,7 @@ Una trama ocupa aproximadamente **710 µs** con estos parámetros. La simulació
 | `ack`, `ack_err` | Inyección del NACK y diagnóstico de la trama |
 | `frames` | Avance de las siete tramas completas |
 
-Estas siete señales son las incluidas en el VCD. El reloj interno `clk` y los estados `state`, `ph`, `idx` y `bit_i` existen en el código, pero no se guardaron en esta traza. En una vista general interesan las siete tramas y los errores; en una ampliación del bus se pueden explicar los bits y el noveno pulso de reconocimiento.
+El VCD registra estas siete señales. `tm_clk` y `tm_dio` contienen la transmisión de los bits y el noveno pulso de reconocimiento; `received`, `frames` y `ack_err` resumen los datos y el estado de cada trama. El reloj interno `clk` y los controles de la máquina de estados no forman parte de las señales registradas.
 
 ## Captura y análisis
 
@@ -81,11 +81,11 @@ Al principio, la entrada `segments` ya vale `3F063F06`, mientras `received` cons
 
 Las líneas inferiores muestran actividad en el reloj serial y en DIO. Durante el comienzo de la cuarta trama, `ack` baja alrededor de **2,150 ms** y se restablece cerca de **2,250 ms**, introduciendo un NACK temprano. `ack_err` sigue en cero en esta captura porque el driver publica el diagnóstico al evaluar el último ACK de la trama, no inmediatamente al cambiar el control de la prueba.
 
-### Alcance del intervalo
+### Reconocimiento y recuperación en la secuencia
 
-El diagnóstico de ese NACK aparece en **2,830 ms**, fuera de la ventana. Los cambios posteriores de `ack_err` ocurren cerca de **3,540 ms** (recuperación), **4,250 ms** (nueva falta de ACK) y **4,960 ms** (recuperación final). Por ello esta imagen muestra la inyección del error, pero no permite observar todavía su indicación ni las recuperaciones.
+La figura representa la actualización del patrón recibido, el cierre de la tercera trama y la inyección de NACK en la cuarta. En el intervalo posterior del VCD, el diagnóstico de ese NACK aparece en **2,830 ms**. Los siguientes cambios de `ack_err` ocurren cerca de **3,540 ms** (recuperación), **4,250 ms** (nueva falta de ACK) y **4,960 ms** (recuperación final).
 
-Para documentar las siete tramas conviene añadir una vista de **0–4,971125 ms**. Una ampliación de un byte y su noveno pulso permitiría distinguir los bits LSB primero y el reconocimiento. La escala actual es útil para comparar la entrada, la recepción y el contador de tramas.
+La secuencia de las siete tramas se desarrolla entre **0 y 4,971125 ms**. En cada trama los bytes se transmiten LSB primero y el noveno pulso evalúa el reconocimiento. La figura relaciona ese proceso serial con la actualización de `received` y el incremento de `frames`.
 
 La ejecución completa verificada termina con **siete tramas correctas según las condiciones del ensayo**, incluyendo la detección de los NACK intencionales y la recuperación posterior.
 

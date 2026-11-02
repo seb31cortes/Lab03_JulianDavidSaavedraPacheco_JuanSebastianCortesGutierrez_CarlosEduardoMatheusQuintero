@@ -149,11 +149,11 @@ La etapa 2 muestra A=5 y B=3 con resultados 8, 2, 1 y 7 para suma, resta, AND y 
 
 ![GTKWave: conservación del resultado y ejecución con BTN3](sim/top/capturas/top_retencion.png)
 
-En la etapa 4 cambian datos, pareja y operación mientras el resultado guardado se conserva. En la etapa 5, `result_q` mantiene `13` hexadecimal (19 decimal) aunque `alu_out` pase a `0B` (11 decimal) con BTN3 mantenido. La siguiente ejecución de la etapa 7 guarda `0F` (15) y cambia al modo binario. Los rebotes de la etapa 6 quedan comprimidos y la etapa 8 queda fuera de esta ventana.
+En la etapa 4 cambian datos, pareja y operación mientras el resultado guardado se conserva. En la etapa 5, `result_q` mantiene `13` hexadecimal (19 decimal) aunque `alu_out` pase a `0B` (11 decimal) con BTN3 mantenido. La siguiente ejecución de la etapa 7 guarda `0F` (15) y cambia al modo binario. Los ensayos de rebotes y acciones simultáneas se desarrollan en los intervalos de las etapas 6 y 8 de la simulación.
 
 ![GTKWave: recepción del patrón del TM1637 e inyección de NACK](sim/tm1637/capturas/tm1637_actualizacion_y_nack.png)
 
-La captura del driver muestra la actualización de `received`, el avance de la trama 2 a la 3 y la desactivación temporal de ACK en la cuarta. El diagnóstico `ack_err` de ese NACK se actualiza después de la ventana mostrada. Cada análisis detalla qué eventos se ven y qué intervalos adicionales permitirían representar el resto de la prueba.
+La captura del driver muestra la actualización de `received`, el avance de la trama 2 a la 3 y la desactivación temporal de ACK en la cuarta. El diagnóstico `ack_err` de ese NACK y las recuperaciones posteriores corresponden a los siguientes intervalos de la simulación. El análisis del driver relaciona el fragmento mostrado con la secuencia de reconocimiento de las siete tramas.
 
 ## Evidencias de funcionamiento en FPGA
 
@@ -180,4 +180,4 @@ La prueba exhaustiva de la ALU complementa las cuatro demostraciones físicas. B
 2. El resultado de seis bits con signo conserva sumas mayores que 15 y restas negativas. Las demostraciones físicas de 15+1=16 y de 15−1=14 frente a 1−15=−14 concuerdan con la codificación y el rango implementados.
 3. Guardar conjuntamente el resultado y su formato evita que cambios posteriores en los operandos o en la operación modifiquen el display. La captura de retención muestra esa separación entre `alu_out` y `result_q`, y el ensayo con BTN3 mantenido comprueba la ejecución única por pulsación aceptada.
 4. La captura independiente de antirrebote relaciona una pulsación sostenida con su aceptación después de 10 ms. El formateador convierte el resultado a códigos de segmentos y el driver introduce la latencia de transmisión esperada; por ello el valor guardado y el patrón recibido no tienen que cambiar en el mismo instante.
-5. Los siete testbenches verificados aportan la cobertura completa declarada en la tabla. Las diez capturas documentan ventanas concretas: algunas requieren otras vistas para mostrar todas las operaciones, los destinos de escritura, los negativos o las recuperaciones de ACK. Esta distinción permite interpretar la evidencia visual sin atribuirle eventos que quedan fuera de sus intervalos.
+5. Los siete testbenches verifican los casos declarados en la tabla. Las diez capturas ilustran intervalos representativos de cada prueba, y los archivos VCD contienen la secuencia temporal completa: operaciones, destinos de escritura, formatos y ciclos de reconocimiento comprobados automáticamente.

@@ -62,7 +62,7 @@ El cambio insuficiente dura **9,999992 ms**, apenas un ciclo por debajo del umbr
 | `pulse` | Pulsos de un ciclo asociados a subidas válidas de `stable` |
 | `pulses` | Cuenta de acciones aceptadas, que finaliza en 2 |
 
-El VCD guarda estas cuatro señales. El reloj rápido, las etapas de sincronización y el contador interno no se incluyeron en el volcado para mantener la traza pequeña. Una vista de todo el ensayo permite ver los intervalos de 10 ms; para distinguir los pulsos de 8 ns hará falta una ampliación alrededor de las subidas de `stable`.
+El VCD guarda estas cuatro señales y registra los intervalos de filtrado de 10 ms. El reloj rápido, las etapas de sincronización y el contador interno no forman parte del volcado. Cada subida aceptada de `stable` produce un pulso de 8 ns y un incremento de `pulses`.
 
 ## Captura y análisis
 
@@ -72,12 +72,12 @@ La captura compara la entrada `btn`, el nivel filtrado `stable`, el pulso `pulse
 
 La pulsación que comienza alrededor de **20 ms** se acepta cerca de **30 ms**, de acuerdo con el umbral de 10 ms. En ese momento aumenta `stable` y la cuenta `pulses` pasa de 0 a 1. Mantener el botón pulsado no produce más incrementos. El intento de liberación entre aproximadamente 40 y 50 ms no alcanza el umbral; la liberación posterior sí prepara el circuito para otra pulsación.
 
-La separación entre el cambio solicitado por `btn` y el nivel aceptado permite observar el filtrado en esta escala. Sin embargo, el pulso de ejecución dura solo **8 ns**, por lo que queda comprimido en una vista de decenas de milisegundos.
+La figura relaciona el cambio solicitado por `btn` con el nivel aceptado en `stable` y el incremento de `pulses`. La evolución se presenta en milisegundos, mientras que cada pulso de ejecución tiene una duración de **8 ns**, correspondiente a un ciclo del reloj de 125 MHz.
 
-### Alcance y ampliaciones útiles
+### Eventos de la secuencia temporal
 
-El cambio inicial que el filtro rechaza, entre 0 y 10 ms, queda fuera del comienzo de esta ventana. Además, la segunda pulsación se acepta apenas después de **80 ms**: `stable` sube en **80,000196 ms** y `pulses` llega a 2 en **80,000204 ms**. La imagen no permite leer ese último incremento en su extremo derecho; no significa que falte en el VCD.
+La figura muestra la aceptación de la primera pulsación, el mantenimiento del botón y el proceso de liberación. El rechazo del primer cambio se verifica en un intervalo anterior, entre 0 y 10 ms. La primera pulsación aceptada genera `pulse` entre **30,000076 y 30,000084 ms**.
 
-Una vista general desde cero y una ampliación de **79,999 a 80,000216 ms** permitirían mostrar el último pulso y la cuenta final. Para el primer pulso puede ampliarse alrededor de **30,000076–30,000084 ms**. El intervalo completo de la prueba termina en **80,000216 ms**, con dos pulsaciones aceptadas.
+La segunda pulsación se verifica en el intervalo final del VCD: `stable` sube en **80,000196 ms**, el pulso termina y `pulses` llega a 2 en **80,000204 ms**. La secuencia termina en **80,000216 ms**, con dos pulsaciones aceptadas y sin repeticiones durante el mantenimiento del botón.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

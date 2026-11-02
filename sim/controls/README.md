@@ -95,8 +95,8 @@ Por ejemplo, `alu_result=34` hexadecimal se captura en `result_q` alrededor de *
 
 Los buses de seis bits están en hexadecimal y contienen números con signo: `34` representa **−12** y `3B` representa **−5**, porque ambos patrones usan complemento a dos. Las cifras de la captura no deben leerse como enteros decimales positivos.
 
-### Alcance de las vistas
+### Secuencia completa de los controles
 
-Las dos ventanas son suficientes para explicar varios avances de los selectores, un retorno de dirección y varios ejemplos de captura y retención. No hace falta ampliar su duración para apreciar esos mecanismos. La ejecución completa recorre las 16 parejas dos veces y también verifica los indicadores y el almacenamiento del formato.
+Las dos figuras muestran varios avances de los selectores, el retorno de la dirección de escritura y la captura y retención de valor y formato. En los demás intervalos se repite este procesamiento hasta completar 32 iteraciones y dos recorridos de las 16 parejas. Durante toda la secuencia se comparan la dirección, los indicadores y el contenido almacenado con sus valores esperados.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

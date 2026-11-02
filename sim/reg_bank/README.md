@@ -57,7 +57,7 @@ El primer recorrido aporta 16 comprobaciones de parejas y los recorridos posteri
 | `dut.reg_a` a `dut.reg_d` | Contenido de R0 a R3, útil para observar que solo cambia el destino escrito |
 | `checks` | Avance del recorrido de las parejas de lectura |
 
-Una captura de escritura debe relacionar el cambio del registro de destino con una subida de `clk` mientras `write_enable=1`. Una captura de lectura debe mostrar que A y B seleccionan de forma independiente. Para la retención, interesa un cambio de `data_in` con `write_enable=0` y registros almacenados constantes.
+La escritura se identifica por el cambio del registro de destino en una subida de `clk` con `write_enable=1`. Las direcciones A y B seleccionan los datos de lectura de forma independiente. La retención se comprueba cuando `data_in` cambia con `write_enable=0` y el contenido almacenado permanece constante.
 
 ## Captura y análisis
 
@@ -69,9 +69,9 @@ El primer pulso escribe cero sobre el estado inicial cero, por lo que no produce
 
 Entre escrituras, `data_in` toma otros valores, como `F` y `E`, mientras `write_enable=0`; el dato almacenado se conserva. Los recorridos de `sel_a` y `sel_b` hacen que `qa` y `qb` entreguen el contenido del registro solicitado. Tras guardar R0=1, leer la dirección `00` produce 1 y leer los otros registros produce cero. La selección de cada puerto es independiente.
 
-### Alcance del intervalo
+### Recorrido de las direcciones
 
-La escala permite distinguir las escrituras y las lecturas de este tramo, pero el intervalo solo contiene el comienzo de la prueba sobre R0. Las direcciones R1, R2 y R3 aparecen por primera vez en **2,696 µs**, **5,256 µs** y **7,816 µs**, respectivamente. Una vista general hasta **10,368 µs**, complementada con ventanas de esas direcciones, mostraría el recorrido de los cuatro destinos.
+El intervalo representado muestra las primeras escrituras y lecturas de R0. El mismo procedimiento se aplica a los demás registros en intervalos posteriores: R1 desde **2,696 µs**, R2 desde **5,256 µs** y R3 desde **7,816 µs**. En cada dirección se recorren los 16 datos posibles y se comprueban ambos puertos de lectura. El recorrido de los cuatro destinos termina en **10,368 µs**.
 
 La prueba completa verificada incluye **64 escrituras y 1.040 pares de lectura**. Esta captura documenta la escritura síncrona, la retención y la lectura de los primeros datos de R0.
 

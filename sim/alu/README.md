@@ -49,7 +49,7 @@ La espera de 10 ns separa los estímulos y permite observar cada respuesta combi
 | `checks` | Cantidad de casos completados |
 | `i`, `j`, `k` | Posición dentro de los recorridos de operandos y operación |
 
-En una vista ampliada debe verse que un cambio de entradas produce el resultado correspondiente sin esperar un flanco de reloj. Al pasar de suma a resta aparecen valores negativos; en AND y OR los dos bits altos del resultado permanecen en cero. El VCD también incluye las señales de la instancia `dut`.
+Un cambio de entradas produce el resultado correspondiente sin esperar un flanco de reloj. Al pasar de suma a resta aparecen valores negativos; en AND y OR los dos bits altos del resultado permanecen en cero. El VCD también incluye las señales de la instancia `dut`.
 
 ## Captura y análisis
 
@@ -61,10 +61,10 @@ La captura muestra los operandos `a[3:0]` y `b[3:0]`, el selector `sel[1:0]`, la
 
 Los operandos y resultados están visualizados en hexadecimal. Por ejemplo, `A` equivale a 10 decimal y `10` equivale a 16 decimal.
 
-### Alcance del intervalo
+### Operaciones en la secuencia completa
 
-La imagen permite explicar la suma, pero no incluye las otras tres operaciones ni los resultados negativos. En el VCD, resta comienza en **2,561 µs**, AND en **5,121 µs** y OR en **7,681 µs**. Para representar toda la prueba conviene añadir una vista de **0 a 10,241 µs** y ampliaciones por operación; para la resta resulta útil el formato decimal con signo.
+La imagen representa el comienzo del recorrido de suma, con variación de los operandos y coincidencia entre `out` y `expected`. Las otras operaciones se desarrollan en intervalos posteriores del mismo VCD: resta desde **2,561 µs**, AND desde **5,121 µs** y OR desde **7,681 µs**. En el intervalo de resta aparecen los resultados negativos en complemento a dos. La secuencia completa termina en **10,241 µs**.
 
-La ejecución completa ya verificada cubre los **1.024 casos**. La coincidencia que muestra esta imagen corresponde únicamente a su ventana de suma.
+La ejecución completa verifica los **1.024 casos** de las cuatro operaciones. La figura ilustra la respuesta combinacional y la comparación automática durante el intervalo de suma.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

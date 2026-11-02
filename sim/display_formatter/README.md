@@ -61,7 +61,7 @@ Las comparaciones usan `!==` para detectar también valores desconocidos. En tot
 
 ## Señales para interpretar el VCD
 
-| Señales | Relación que conviene observar |
+| Señales | Comportamiento representado |
 |---|---|
 | `value`, `binary_mode`, `segments` | Valor de entrada, representación seleccionada y cuatro códigos resultantes |
 | `dut.negative`, `dut.magnitude` | Separación entre signo y magnitud durante la prueba decimal |
@@ -82,10 +82,10 @@ En **64 ns**, `binary_mode` sube a uno y `value` vuelve a cero. La salida pasa a
 
 La fila roja de `bits_expected` antes de 64 ns corresponde a una referencia auxiliar del testbench que todavía no se ha inicializado: solo se utiliza al comenzar las comprobaciones binarias. La salida `segments` ya tiene valores definidos, por lo que esos `X` de la referencia auxiliar no indican un fallo del formateador.
 
-### Alcance del intervalo
+### Valores en la secuencia completa
 
-La captura permite explicar bien el cambio de modo y los primeros patrones binarios, pero no muestra valores negativos ni el recorrido binario completo. Una ventana de **16–24 ns** mostraría ejemplos decimales negativos; otra de **64–80 ns** abarcaría los 16 patrones binarios. Una vista de 0–80 ns serviría como resumen de la secuencia completa.
+La figura muestra los últimos valores positivos del recorrido decimal, el cambio de `binary_mode` y los primeros patrones binarios. Los valores decimales negativos se verifican durante los primeros **32 ns** de la simulación; los no negativos continúan hasta **64 ns**. El intervalo de **64–80 ns** recorre los 16 patrones binarios. Todos estos casos pertenecen a la misma secuencia de entrada y comparación de segmentos.
 
-La verificación completa cubre los **64 valores decimales con signo y los 16 patrones binarios**. La imagen documenta únicamente la transición entre sus dos partes.
+La verificación completa cubre los **64 valores decimales con signo y los 16 patrones binarios**. La imagen documenta la transición entre las dos representaciones y la coincidencia de `segments` con la referencia binaria.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

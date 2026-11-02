@@ -22,8 +22,8 @@ Las pruebas de ALU y formateador son combinacionales. Banco, controles y antirre
 
 ## Capturas de GTKWave
 
-Las **diez capturas de GTKWave** muestran las señales de cada testbench y las etapas identificadas por `stage` en la integración. Cada README explica los valores observados y el alcance del intervalo temporal mostrado.
+Las **diez capturas de GTKWave** muestran las señales de cada testbench y las etapas identificadas por `stage` en la integración. Cada README explica los valores observados y su relación con la secuencia temporal de la prueba.
 
-Los buses que aparecen en hexadecimal se interpretan explícitamente en cada análisis; una ventana parcial no sustituye las comprobaciones de todo el testbench. En ALU, banco, formateador y TM1637 se indican los tramos adicionales que permitirían mostrar el resto de la prueba. En antirrebote y retención interesa ampliar eventos que quedan comprimidos en una vista general.
+Los buses que aparecen en hexadecimal se interpretan explícitamente en cada análisis. Cada figura corresponde a un intervalo de la simulación; los demás casos se desarrollan en otros intervalos del mismo VCD. La secuencia completa recorre las cuatro operaciones de la ALU, los cuatro destinos del banco, los formatos decimal y binario, el filtrado de botones y los ciclos de transmisión con ACK/NACK.
 
 [Volver al README principal](../README.md).

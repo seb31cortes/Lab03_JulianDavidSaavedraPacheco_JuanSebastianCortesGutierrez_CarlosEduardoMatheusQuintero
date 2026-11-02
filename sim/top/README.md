@@ -159,13 +159,13 @@ En `stage=02`, `sel_a=00` y `sel_b=01` seleccionan **A=R0=5 y B=R1=3**. El selec
 
 `received` pasa por los códigos `3F3F3F7F`, `3F3F3F5B`, `3F3F3F06` y `3F060606`, correspondientes a esas cuatro visualizaciones. Al comienzo conserva temporalmente un patrón anterior y después se actualiza al completarse la transmisión. La demora entre la captura del resultado y la recepción de segmentos es la latencia esperada del driver.
 
-La ventana de varios milisegundos incluye las cuatro operaciones y sus actualizaciones de display. Los pulsos de `btn` y `btn_edge` quedan estrechos en esta escala; para medir su ancho haría falta una ampliación, pero la secuencia de resultados sí se distingue.
+La figura presenta las cuatro operaciones y sus actualizaciones de display a lo largo de varios milisegundos. Cada pulsación aceptada produce un `btn_edge` de un ciclo, equivalente a 250 ns con el reloj de esta simulación; el valor guardado permanece estable durante las tramas que transmiten sus segmentos.
 
 ### Conservación del resultado y BTN3 mantenido: etapas 4, 5 y 7
 
 ![Integración: cambios de operandos y operación con conservación del resultado](capturas/top_retencion.png)
 
-La ventana de aproximadamente **96,5–100,4 ms** incluye el final del recorrido de parejas (`stage=03`), la retención tras escritura (`04`), el botón mantenido (`05`) y el comienzo de `07`. La etapa `06` también ocurre en ese intervalo, pero es demasiado breve para leerla claramente con esta escala.
+La ventana de aproximadamente **96,5–100,4 ms** incluye el final del recorrido de parejas (`stage=03`), la retención tras escritura (`04`), el botón mantenido (`05`) y el comienzo de `07`. La etapa `06` transcurre entre `05` y `07`, de acuerdo con la secuencia temporal del testbench.
 
 En `stage=04`, R0 se reescribe y cambian la pareja y la operación. `alu_out` termina en `13` hexadecimal, equivalente a **19 decimal**, mientras `result_q` conserva `05` y el modo binario anterior. El cálculo combinacional cambia, pero el resultado almacenado sigue siendo el de la última ejecución.
 
@@ -173,10 +173,10 @@ Al comenzar `stage=05`, BTN3 se mantiene activo (`btn=8`). La primera pulsación
 
 Más adelante, al liberarlo y ejecutar otra vez en `stage=07`, `result_q` pasa a `0F` (**15 decimal**) y `binary_q` vuelve a uno. La fila `received` muestra la actualización previa a los segmentos decimales `3F3F066F`, que dibujan `0019`; la recepción del nuevo patrón binario ocurre después del extremo derecho de esta imagen.
 
-### Alcance de las tres vistas
+### Etapas en la secuencia completa
 
-Las capturas de carga y de operaciones incluyen los eventos necesarios para explicar esas etapas. La de retención también permite distinguir el cálculo instantáneo del valor guardado, pero no debe usarse para afirmar que los rebotes o los eventos simultáneos se ven con detalle.
+Las figuras relacionan la carga de los registros, las cuatro operaciones dirigidas y la conservación del resultado durante los cambios de datos, operación y pareja. Los demás ensayos se distribuyen en los intervalos de `stage` que forman la secuencia completa del VCD.
 
-`stage=06` dura de **99,410 a 99,423 ms**: una ampliación de ese tramo permitiría mostrar los pulsos rechazados. `stage=08` empieza en **100,821125 ms**, fuera de la captura; una ventana desde allí hasta **102,241125 ms** mostraría las acciones simultáneas descritas en el testbench. Las **197 comprobaciones contabilizadas** corresponden a toda la ejecución, no solo a las tres ventanas presentadas.
+En `stage=06`, de **99,410 a 99,423 ms**, se aplican los pulsos cortos de botón y se comprueba que el resultado almacenado permanezca constante. En `stage=08`, desde **100,821125 ms**, se verifican las acciones simultáneas y el uso de los valores previos al flanco. La ejecución termina en **102,241125 ms** y contabiliza **197 comprobaciones** de las distintas etapas.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).
