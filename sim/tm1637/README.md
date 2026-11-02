@@ -71,10 +71,22 @@ Una trama ocupa aproximadamente **710 µs** con estos parámetros. La simulació
 
 Estas siete señales son las incluidas en el VCD. El reloj interno `clk` y los estados `state`, `ph`, `idx` y `bit_i` existen en el código, pero no se guardaron en esta traza. En una vista general interesan las siete tramas y los errores; en una ampliación del bus se pueden explicar los bits y el noveno pulso de reconocimiento.
 
-## Resultado y capturas pendientes
+## Captura y análisis
 
-Resultado verificado: **PASS TM1637: siete tramas**, con comandos, orden LSB, ACK/NACK, coherencia y recuperación comprobados.
+![TM1637: actualización del patrón recibido e inyección de NACK](capturas/tm1637_actualizacion_y_nack.png)
 
-La captura que ya existía se conserva en [capturas/](capturas/). Las nuevas imágenes y su explicación específica se incorporarán cuando el equipo las suministre.
+**Imagen 7 suministrada por el equipo.** Las señales `segments`, `received`, `frames`, `ack`, `ack_err`, `tm_clk` y `tm_dio` identifican la prueba del driver. La ventana comprende aproximadamente **1,4–2,45 ms** y muestra la finalización de la tercera trama y el comienzo de la cuarta.
+
+Al principio, la entrada `segments` ya vale `3F063F06`, mientras `received` conserva `063F063F`. Son patrones de segmentos para `0101` y `1010`, respectivamente. Cerca de **2,020 ms**, la recepción de los cuatro bytes de datos termina y `received` pasa al patrón nuevo. El contador `frames` aumenta de 2 a 3 alrededor de **2,130 ms**, después de recibir también el comando de control del display. La actualización del dato recibido y el cierre de la trama son eventos distintos.
+
+Las líneas inferiores muestran actividad en el reloj serial y en DIO. Durante el comienzo de la cuarta trama, `ack` baja alrededor de **2,150 ms** y se restablece cerca de **2,250 ms**, introduciendo un NACK temprano. `ack_err` sigue en cero en esta captura porque el driver publica el diagnóstico al evaluar el último ACK de la trama, no inmediatamente al cambiar el control de la prueba.
+
+### Alcance del intervalo
+
+El diagnóstico de ese NACK aparece en **2,830 ms**, fuera de la ventana. Los cambios posteriores de `ack_err` ocurren cerca de **3,540 ms** (recuperación), **4,250 ms** (nueva falta de ACK) y **4,960 ms** (recuperación final). Por ello esta imagen muestra la inyección del error, pero no permite observar todavía su indicación ni las recuperaciones.
+
+Para documentar las siete tramas conviene añadir una vista de **0–4,971125 ms**. Una ampliación de un byte y su noveno pulso permitiría distinguir los bits LSB primero y el reconocimiento. La escala actual es útil para comparar la entrada, la recepción y el contador de tramas.
+
+La ejecución completa verificada termina con **siete tramas correctas según las condiciones del ensayo**, incluyendo la detección de los NACK intencionales y la recuperación posterior.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

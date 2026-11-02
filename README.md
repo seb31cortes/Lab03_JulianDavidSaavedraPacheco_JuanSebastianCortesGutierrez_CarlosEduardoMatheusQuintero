@@ -127,33 +127,33 @@ El driver transmite `0x40` (incremento automático), `0xC0` seguido de los cuatr
 
 La siguiente tabla resume los testbenches, los archivos de simulación generados y los resultados obtenidos. Las entradas, el procesamiento, las salidas y el desarrollo de cada prueba se detallan en el [índice de simulaciones](sim/README.md).
 
-| Testbench | Ejecutable / traza | Resultado |
-|---|---|---|
-| [tb_alu.v](sim/alu/tb_alu.v) | `tb_alu.vvp` / `alu.vcd` | **PASS:** 1.024 casos: 4 operaciones × 16 valores de A × 16 de B. |
-| [tb_reg_bank.v](sim/reg_bank/tb_reg_bank.v) | `tb_reg_bank.vvp` / `reg_bank.vcd` | **PASS:** 64 escrituras y 1.040 pares de lectura; retención, aislamiento y escritura síncrona. |
-| [tb_controls.v](sim/controls/tb_controls.v) | `tb_controls.vvp` / `controls.vcd` | **PASS:** dirección, 16 pares recorridos dos veces, indicadores y captura/retención de valor y formato. |
-| [tb_debouncer.v](sim/debouncer/tb_debouncer.v) | `tb_debouncer_real.vvp` / `debouncer_real.vcd` | **PASS:** N=1.250.000, el valor usado en la FPGA; rebotes, umbral de 10 ms, pulsación mantenida y nueva pulsación. |
-| [tb_display_formatter.v](sim/display_formatter/tb_display_formatter.v) | `tb_display_formatter.vvp` / `display_formatter.vcd` | **PASS:** 64 valores decimales con signo (−32…31) y 16 patrones binarios. |
-| [tb_tm1637.v](sim/tm1637/tb_tm1637.v) | `tb_tm1637.vvp` / `tm1637.vcd` | **PASS:** siete tramas, comandos, bits, ACK/NACK, coherencia y recuperación. |
-| [tb_top.v](sim/top/tb_top.v) | `tb_top.vvp` / `top.vcd` | **PASS:** cuatro registros, 16 pares × 4 operaciones, **197 comprobaciones**, display serial y retención. |
+| Testbench | Ejecutable / traza | Resultado | Descripción y capturas |
+|---|---|---|---|
+| [tb_alu.v](sim/alu/tb_alu.v) | `tb_alu.vvp` / `alu.vcd` | **PASS:** 1.024 casos: 4 operaciones × 16 valores de A × 16 de B. | [Ver análisis](sim/alu/README.md) |
+| [tb_reg_bank.v](sim/reg_bank/tb_reg_bank.v) | `tb_reg_bank.vvp` / `reg_bank.vcd` | **PASS:** 64 escrituras y 1.040 pares de lectura; retención, aislamiento y escritura síncrona. | [Ver análisis](sim/reg_bank/README.md) |
+| [tb_controls.v](sim/controls/tb_controls.v) | `tb_controls.vvp` / `controls.vcd` | **PASS:** dirección, 16 pares recorridos dos veces, indicadores y captura/retención de valor y formato. | [Ver análisis](sim/controls/README.md) |
+| [tb_debouncer.v](sim/debouncer/tb_debouncer.v) | `tb_debouncer_real.vvp` / `debouncer_real.vcd` | **PASS:** N=1.250.000, el valor usado en la FPGA; rebotes, umbral de 10 ms, pulsación mantenida y nueva pulsación. | [Ver análisis](sim/debouncer/README.md) |
+| [tb_display_formatter.v](sim/display_formatter/tb_display_formatter.v) | `tb_display_formatter.vvp` / `display_formatter.vcd` | **PASS:** 64 valores decimales con signo (−32…31) y 16 patrones binarios. | [Ver análisis](sim/display_formatter/README.md) |
+| [tb_tm1637.v](sim/tm1637/tb_tm1637.v) | `tb_tm1637.vvp` / `tm1637.vcd` | **PASS:** siete tramas, comandos, bits, ACK/NACK, coherencia y recuperación. | [Ver análisis](sim/tm1637/README.md) |
+| [tb_top.v](sim/top/tb_top.v) | `tb_top.vvp` / `top.vcd` | **PASS:** cuatro registros, 16 pares × 4 operaciones, **197 comprobaciones**, display serial y retención. | [Ver análisis](sim/top/README.md) |
 
 La integración carga **R0=5, R1=3, R2=10 y R3=15** y usa un reloj simulado de 4 MHz y cuatro muestras de antirrebote. Son parámetros del testbench; los valores por defecto de FPGA se conservan. Las pruebas físicas emplean **R0=15 y R1=1**.
 
 ### Capturas de GTKWave
 
-La interpretación de las señales se amplía en las descripciones de [integración](sim/top/README.md) y del [driver TM1637](sim/tm1637/README.md).
+Los análisis de las diez imágenes suministradas por el equipo están en los README de [ALU](sim/alu/README.md#captura-y-análisis), [banco de registros](sim/reg_bank/README.md#captura-y-análisis), [controles](sim/controls/README.md#capturas-y-análisis), [antirrebote](sim/debouncer/README.md#captura-y-análisis), [formateador](sim/display_formatter/README.md#captura-y-análisis), [TM1637](sim/tm1637/README.md#captura-y-análisis) e [integración](sim/top/README.md#capturas-y-análisis).
 
-![GTKWave: operaciones y resultado almacenado](sim/top/capturas/top_operaciones.jpg)
+![GTKWave: cuatro operaciones del sistema integrado](sim/top/capturas/top_operaciones.png)
 
-En `stage=2`, A=5 y B=3 producen 8, 2, 1 y 7. `alu_out` es el cálculo instantáneo; `result_q` y `binary_q` se capturan con BTN3. `received` contiene los segmentos reconstruidos desde el bus del display.
+La etapa 2 muestra A=5 y B=3 con resultados 8, 2, 1 y 7 para suma, resta, AND y OR. `binary_q` selecciona decimal para las operaciones aritméticas y binario para las lógicas; `received` confirma los segmentos transmitidos al display.
 
-![GTKWave: integración y retención](sim/top/capturas/top_general.jpg)
+![GTKWave: conservación del resultado y ejecución con BTN3](sim/top/capturas/top_retencion.png)
 
-La vista general incluye carga y recorrido de parejas. Las etapas 4 a 8 comprueban retención tras escritura, BTN3 mantenido, rebotes, independencia de switches y eventos simultáneos. Sus condiciones se verifican automáticamente en `tb_top.v`.
+En la etapa 4 cambian datos, pareja y operación mientras el resultado guardado se conserva. En la etapa 5, `result_q` mantiene `13` hexadecimal (19 decimal) aunque `alu_out` pase a `0B` (11 decimal) con BTN3 mantenido. La siguiente ejecución de la etapa 7 guarda `0F` (15) y cambia al modo binario. Los rebotes de la etapa 6 quedan comprimidos y la etapa 8 queda fuera de esta ventana.
 
-![GTKWave: TM1637 y ACK/NACK](sim/tm1637/capturas/tm1637.jpg)
+![GTKWave: recepción del patrón del TM1637 e inyección de NACK](sim/tm1637/capturas/tm1637_actualizacion_y_nack.png)
 
-La prueba incluye recepción correcta, NACK temprano, recuperación y ausencia simulada del display. `ack_err` conserva el fallo de la trama afectada y vuelve a cero tras una trama correcta.
+La captura del driver muestra la actualización de `received`, el avance de la trama 2 a la 3 y la desactivación temporal de ACK en la cuarta. El diagnóstico `ack_err` de ese NACK se actualiza después de la ventana mostrada. Cada análisis detalla qué eventos se ven y qué intervalos adicionales permitirían representar el resto de la prueba.
 
 ## Evidencias de funcionamiento en FPGA
 
@@ -184,8 +184,8 @@ Avances Práctica 3/
 │   ├── controls/                Testbench, VVP, VCD y explicación de controles
 │   ├── debouncer/               Prueba con el umbral real de antirrebote
 │   ├── display_formatter/       Conversión decimal y binaria a segmentos
-│   ├── tm1637/                  Protocolo serial, ACK/NACK y capturas previas
-│   └── top/                     Integración completa y capturas previas
+│   ├── tm1637/                  Protocolo serial, ACK/NACK y capturas de simulación
+│   └── top/                     Integración completa y capturas de simulación
 └── evidencias/
     ├── explicacion_general.mp4
     ├── 01_suma/                 video.mp4 + README.md
@@ -201,3 +201,11 @@ Solo `src/*.v` y el XDC corresponden a síntesis; `sim/` contiene la verificaci�
 La suma física 15+1=16 utiliza el ancho adicional del resultado. Las dos restas comprueban el orden A/B y la representación negativa. AND conserva el único bit común en uno; OR conserva todos los bits activos de cualquiera de los operandos. El formato decimal o binario permite interpretar cada resultado en el display.
 
 La prueba exhaustiva de la ALU complementa las cuatro demostraciones físicas. Banco y controles se verifican por separado; la integración comprueba escritura, selección, ejecución y transmisión al display. Guardar valor y modo garantiza la conservación del último resultado hasta una nueva ejecución.
+
+## Conclusiones
+
+1. La separación en módulos permite verificar por partes el cálculo, el almacenamiento, los controles, el formato y la transmisión. La prueba integrada comprueba su interacción mediante la carga de los cuatro registros, las 16 parejas de operandos y las cuatro operaciones.
+2. El resultado de seis bits con signo conserva sumas mayores que 15 y restas negativas. Las demostraciones físicas de 15+1=16 y de 15−1=14 frente a 1−15=−14 concuerdan con la codificación y el rango implementados.
+3. Guardar conjuntamente el resultado y su formato evita que cambios posteriores en los operandos o en la operación modifiquen el display. La captura de retención muestra esa separación entre `alu_out` y `result_q`, y el ensayo con BTN3 mantenido comprueba la ejecución única por pulsación aceptada.
+4. La captura independiente de antirrebote relaciona una pulsación sostenida con su aceptación después de 10 ms. El formateador convierte el resultado a códigos de segmentos y el driver introduce la latencia de transmisión esperada; por ello el valor guardado y el patrón recibido no tienen que cambiar en el mismo instante.
+5. Los siete testbenches verificados aportan la cobertura completa declarada en la tabla. Las diez capturas documentan ventanas concretas: algunas requieren otras vistas para mostrar todas las operaciones, los destinos de escritura, los negativos o las recuperaciones de ACK. Esta distinción permite interpretar la evidencia visual sin atribuirle eventos que quedan fuera de sus intervalos.

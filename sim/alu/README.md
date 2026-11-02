@@ -51,10 +51,20 @@ La espera de 10 ns separa los estímulos y permite observar cada respuesta combi
 
 En una vista ampliada debe verse que un cambio de entradas produce el resultado correspondiente sin esperar un flanco de reloj. Al pasar de suma a resta aparecen valores negativos; en AND y OR los dos bits altos del resultado permanecen en cero. El VCD también incluye las señales de la instancia `dut`.
 
-## Resultado y capturas pendientes
+## Captura y análisis
 
-Resultado verificado: **PASS ALU: 1.024 casos exhaustivos**. La prueba cubre todo el espacio de entradas de las cuatro operaciones implementadas.
+![ALU: suma y comparación con el resultado esperado](capturas/alu_suma.png)
 
-Las imágenes de GTKWave y sus comentarios específicos se incorporarán cuando el equipo las suministre. Para explicarlas, las relaciones principales serán `sel` → operación y `a,b` → `out`, comparando este último con `expected`.
+**Imagen 3 suministrada por el equipo.** Las señales `a[3:0]`, `b[3:0]`, `sel[1:0]`, `out[5:0]` y `expected[5:0]` identifican el testbench de la ALU. La ventana comprende aproximadamente los primeros **500 ns** y mantiene `sel=00`, por lo que muestra la **suma**.
+
+`b` recorre los valores hexadecimales `0` a `F` y después vuelve a cero mientras `a` avanza. Las filas `out` y `expected` coinciden en los casos visibles. Cuando A=0, la salida reproduce B; con A=1 y B=`F`, el resultado es `10` hexadecimal, equivalente a **16 decimal**. Ese resultado muestra que la salida conserva el acarreo en su ancho de seis bits.
+
+Los operandos y resultados están visualizados en hexadecimal. Por ejemplo, `A` equivale a 10 decimal y `10` equivale a 16 decimal.
+
+### Alcance del intervalo
+
+La imagen permite explicar la suma, pero no incluye las otras tres operaciones ni los resultados negativos. En el VCD, resta comienza en **2,561 µs**, AND en **5,121 µs** y OR en **7,681 µs**. Para representar toda la prueba conviene añadir una vista de **0 a 10,241 µs** y ampliaciones por operación; para la resta resulta útil el formato decimal con signo.
+
+La ejecución completa ya verificada cubre los **1.024 casos**. La coincidencia que muestra esta imagen corresponde únicamente a su ventana de suma.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

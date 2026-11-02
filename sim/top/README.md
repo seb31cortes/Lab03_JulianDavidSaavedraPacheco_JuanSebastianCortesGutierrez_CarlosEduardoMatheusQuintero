@@ -132,10 +132,51 @@ Los buses `alu_out` y `result_q` se interpretan con signo. `received` es un patr
 
 La traza selecciona estas señales y omite el reloj rápido, los contadores de antirrebote y las líneas `tm_clk/tm_dio`. Para explicar los bits del protocolo se utiliza la [traza específica del driver](../tm1637/README.md), donde sí se guardan las dos líneas del bus.
 
-## Resultado y capturas pendientes
+## Capturas y análisis
 
-Resultado verificado: **PASS TOP**, cuatro registros, 16 parejas × cuatro operaciones y **197 comprobaciones contabilizadas** por el testbench, además de sus verificaciones de datos e integridad del protocolo. La simulación termina en **102,241125 ms**.
+### Carga del banco: etapas 0 y 1
 
-Las capturas que ya existían se conservan en [capturas/](capturas/). Cuando el equipo suministre las nuevas imágenes, se incorporarán y comentarán relacionando `stage`, los pulsos de `btn_edge`, `alu_out`, `result_q`, `binary_q` y la recepción del display.
+![Integración: carga secuencial de los cuatro registros](capturas/top_carga_registros.png)
+
+**Imagen 8 suministrada por el equipo.** La combinación de `stage`, los switches de datos, los botones, la dirección de escritura y los cuatro registros identifica el ensayo de carga del sistema completo. En las primeras decenas de microsegundos se pasa del arranque (`stage=00`) a la carga (`stage=01`).
+
+Los switches `sw` toman **5, 3, A y F**, que corresponden a los valores decimales **5, 3, 10 y 15**. `data_sw` sigue esos cambios después de la sincronización. Las pulsaciones de escritura y avance hacen que `wr_addr` recorra `00`, `01`, `10` y `11`, mientras `reg_a`, `reg_b`, `reg_c` y `reg_d` almacenan cada dato y lo conservan durante las cargas siguientes.
+
+`btn` aparece como un bus hexadecimal: `8` corresponde a BTN3 en el ensayo inicial, `2` a BTN1 para escribir y `1` a BTN0 para avanzar. `btn_edge` contiene pulsos más breves, pues cada acción aceptada dura un solo ciclo. La imagen permite comprobar que la selección, la escritura y el almacenamiento trabajan conjuntamente y que los cuatro registros terminan con sus valores de prueba.
+
+### Cuatro operaciones dirigidas: etapa 2
+
+![Integración: suma, resta, AND y OR sobre A igual a 5 y B igual a 3](capturas/top_operaciones.png)
+
+**Imagen 9 suministrada por el equipo.** `stage=02`, `sel_a=00` y `sel_b=01` identifican el ensayo sobre **A=R0=5 y B=R1=3**. El selector externo y su versión sincronizada recorren `00`, `01`, `10` y `11`.
+
+| Código observado | Operación | `alu_out` y `result_q` en hexadecimal | Significado | `binary_q` |
+|---|---|---|---|---|
+| `00` | Suma | `08` | 8, mostrado como `0008` | 0 |
+| `01` | Resta | `02` | 2, mostrado como `0002` | 0 |
+| `10` | AND | `01` | 1, mostrado como `0001` | 1 |
+| `11` | OR | `07` | 7, mostrado como `0111` | 1 |
+
+`received` pasa por los códigos `3F3F3F7F`, `3F3F3F5B`, `3F3F3F06` y `3F060606`, correspondientes a esas cuatro visualizaciones. Al comienzo conserva temporalmente un patrón anterior y después se actualiza al completarse la transmisión. La demora entre la captura del resultado y la recepción de segmentos es la latencia esperada del driver.
+
+La ventana de varios milisegundos incluye las cuatro operaciones y sus actualizaciones de display. Los pulsos de `btn` y `btn_edge` quedan estrechos en esta escala; para medir su ancho haría falta una ampliación, pero la secuencia de resultados sí se distingue.
+
+### Conservación del resultado y BTN3 mantenido: etapas 4, 5 y 7
+
+![Integración: cambios de operandos y operación con conservación del resultado](capturas/top_retencion.png)
+
+**Imagen 10 suministrada por el equipo.** La ventana de aproximadamente **96,5–100,4 ms** incluye el final del recorrido de parejas (`stage=03`), la retención tras escritura (`04`), el botón mantenido (`05`) y el comienzo de `07`. La etapa `06` también ocurre en ese intervalo, pero es demasiado breve para leerla claramente con esta escala.
+
+En `stage=04`, R0 se reescribe y cambian la pareja y la operación. `alu_out` termina en `13` hexadecimal, equivalente a **19 decimal**, mientras `result_q` conserva `05` y el modo binario anterior. El cálculo combinacional cambia, pero el resultado almacenado sigue siendo el de la última ejecución.
+
+Al comenzar `stage=05`, BTN3 se mantiene activo (`btn=8`). La primera pulsación aceptada guarda **19** y pone `binary_q=0`. Después se cambia la operación a OR: `alu_out` pasa a `0B`, equivalente a **11 decimal**, mientras `result_q` permanece en `13` y conserva el modo decimal. Esto muestra que mantener BTN3 no repite la ejecución.
+
+Más adelante, al liberarlo y ejecutar otra vez en `stage=07`, `result_q` pasa a `0F` (**15 decimal**) y `binary_q` vuelve a uno. La fila `received` muestra la actualización previa a los segmentos decimales `3F3F066F`, que dibujan `0019`; la recepción del nuevo patrón binario ocurre después del extremo derecho de esta imagen.
+
+### Alcance de las tres vistas
+
+Las capturas de carga y de operaciones incluyen los eventos necesarios para explicar esas etapas. La de retención también permite distinguir el cálculo instantáneo del valor guardado, pero no debe usarse para afirmar que los rebotes o los eventos simultáneos se ven con detalle.
+
+`stage=06` dura de **99,410 a 99,423 ms**: una ampliación de ese tramo permitiría mostrar los pulsos rechazados. `stage=08` empieza en **100,821125 ms**, fuera de la captura; una ventana desde allí hasta **102,241125 ms** mostraría las acciones simultáneas descritas en el testbench. Las **197 comprobaciones contabilizadas** corresponden a toda la ejecución, no solo a las tres ventanas presentadas.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

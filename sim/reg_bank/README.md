@@ -59,10 +59,20 @@ El primer recorrido aporta 16 comprobaciones de parejas y los recorridos posteri
 
 Una captura de escritura debe relacionar el cambio del registro de destino con una subida de `clk` mientras `write_enable=1`. Una captura de lectura debe mostrar que A y B seleccionan de forma independiente. Para la retención, interesa un cambio de `data_in` con `write_enable=0` y registros almacenados constantes.
 
-## Resultado y capturas pendientes
+## Captura y análisis
 
-Resultado verificado: **PASS REG_BANK: 64 escrituras y 1.040 pares de lectura**, con las comprobaciones de retención y aislamiento completadas. La prueba no incluye la selección física mediante botones; esa interacción se cubre en la integración.
+![Banco: escritura de R0 y selección de los puertos de lectura](capturas/banco_escritura_r0.png)
 
-Se incorporarán las imágenes de GTKWave que aporte el equipo junto con la explicación de los flancos y las lecturas que aparezcan en ellas.
+**Imagen 4 suministrada por el equipo.** `write_enable`, `address`, `data_in`, las dos direcciones `sel_a/sel_b`, las salidas `qa/qb` y los cuatro registros internos identifican la prueba del banco. La ventana muestra aproximadamente **0–500 ns** y mantiene `address=00`, de modo que las escrituras visibles se dirigen a **R0**, llamado `reg_a` en el módulo.
+
+El primer pulso escribe cero sobre el estado inicial cero, por lo que no produce un cambio numérico visible. Después se observa que `reg_a` pasa a **1 cerca de 300 ns** y a **2 cerca de 460 ns**, coincidiendo con subidas del reloj mientras la habilitación está activa. `reg_b`, `reg_c` y `reg_d` permanecen en cero.
+
+Entre escrituras, `data_in` toma otros valores, como `F` y `E`, mientras `write_enable=0`; el dato almacenado se conserva. Los recorridos de `sel_a` y `sel_b` hacen que `qa` y `qb` entreguen el contenido del registro solicitado. Tras guardar R0=1, leer la dirección `00` produce 1 y leer los otros registros produce cero. La selección de cada puerto es independiente.
+
+### Alcance del intervalo
+
+La escala permite distinguir las escrituras y las lecturas de este tramo, pero el intervalo solo contiene el comienzo de la prueba sobre R0. Las direcciones R1, R2 y R3 aparecen por primera vez en **2,696 µs**, **5,256 µs** y **7,816 µs**, respectivamente. Una vista general hasta **10,368 µs**, complementada con ventanas de esas direcciones, mostraría el recorrido de los cuatro destinos.
+
+La prueba completa verificada incluye **64 escrituras y 1.040 pares de lectura**. Esta captura documenta la escritura síncrona, la retención y la lectura de los primeros datos de R0.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

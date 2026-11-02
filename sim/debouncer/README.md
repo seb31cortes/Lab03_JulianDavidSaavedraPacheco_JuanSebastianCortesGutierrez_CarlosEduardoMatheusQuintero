@@ -64,10 +64,20 @@ El cambio insuficiente dura **9,999992 ms**, apenas un ciclo por debajo del umbr
 
 El VCD guarda estas cuatro señales. El reloj rápido, las etapas de sincronización y el contador interno no se incluyeron en el volcado para mantener la traza pequeña. Una vista de todo el ensayo permite ver los intervalos de 10 ms; para distinguir los pulsos de 8 ns hará falta una ampliación alrededor de las subidas de `stable`.
 
-## Resultado y capturas pendientes
+## Captura y análisis
 
-Resultado verificado: **PASS DEBOUNCER: N=1.250.000**, con umbral, rebotes, pulsación mantenida, liberación y nueva pulsación comprobados.
+![Antirrebote: entrada del botón, nivel aceptado y cuenta de pulsaciones](capturas/antirrebote_general.png)
 
-Cuando se reciban las imágenes del equipo, se explicarán los cambios de `btn` rechazados, la demora hasta `stable` y los dos incrementos de `pulses`.
+**Imagen 5 suministrada por el equipo.** Las cuatro señales `btn`, `stable`, `pulse` y `pulses` identifican la prueba independiente de antirrebote. La vista abarca varias decenas de milisegundos y llega aproximadamente a **80 ms**.
+
+La pulsación que comienza alrededor de **20 ms** se acepta cerca de **30 ms**, de acuerdo con el umbral de 10 ms. En ese momento aumenta `stable` y la cuenta `pulses` pasa de 0 a 1. Mantener el botón pulsado no produce más incrementos. El intento de liberación entre aproximadamente 40 y 50 ms no alcanza el umbral; la liberación posterior sí prepara el circuito para otra pulsación.
+
+La separación entre el cambio solicitado por `btn` y el nivel aceptado permite observar el filtrado en esta escala. Sin embargo, el pulso de ejecución dura solo **8 ns**, por lo que queda comprimido en una vista de decenas de milisegundos.
+
+### Alcance y ampliaciones útiles
+
+El cambio inicial que el filtro rechaza, entre 0 y 10 ms, queda fuera del comienzo de esta ventana. Además, la segunda pulsación se acepta apenas después de **80 ms**: `stable` sube en **80,000196 ms** y `pulses` llega a 2 en **80,000204 ms**. La imagen no permite leer ese último incremento en su extremo derecho; no significa que falte en el VCD.
+
+Una vista general desde cero y una ampliación de **79,999 a 80,000216 ms** permitirían mostrar el último pulso y la cuenta final. Para el primer pulso puede ampliarse alrededor de **30,000076–30,000084 ms**. El intervalo completo de la prueba termina en **80,000216 ms**, con dos pulsaciones aceptadas.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

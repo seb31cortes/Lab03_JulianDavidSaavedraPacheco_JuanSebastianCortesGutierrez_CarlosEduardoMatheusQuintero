@@ -73,10 +73,30 @@ Los valores capturados van de **−16 a 15**. El −16 verifica la capacidad del
 
 Para leer los números negativos, `alu_result` y `result_q` se interpretan como valores con signo de seis bits. Las direcciones y los indicadores se interpretan como índices o patrones binarios.
 
-## Resultado y capturas pendientes
+## Capturas y análisis
 
-Resultado verificado: **PASS CONTROLS**, con dirección, 16 parejas recorridas dos veces, LEDs, RGB y captura/retención del resultado y su formato.
+### Selección de direcciones, parejas e indicadores
 
-Las imágenes que suministre el equipo se incorporarán para señalar los avances de los contadores y los intervalos donde cambian las entradas mientras `result_q` y `binary_q` permanecen constantes.
+![Controles: avance de dirección, pareja, LEDs y RGB](capturas/controles_seleccion.png)
+
+**Imagen 1 suministrada por el equipo.** Las entradas `next_addr` y `next_pair` y las salidas `addr`, `a`, `b`, `led` y `rgb` identifican la parte de selección de `tb_controls`. La ventana, de unos **250–760 ns**, contiene varios pulsos y permite distinguir sus efectos.
+
+Con cada habilitación y la siguiente subida de reloj, `addr` avanza por `00`, `01`, `10` y `11`. El RGB sigue esa dirección: `100` rojo, `010` verde, `001` azul y `111` blanco. El retorno a `00` restablece el rojo.
+
+La pareja avanza con B como índice rápido. Al pasar de `a=01,b=11` a `a=10,b=00`, B vuelve a cero y A aumenta. Los LEDs recorren `4,5,6,7,8,9,A,B,C`, mostrados en **hexadecimal**: el `8`, por ejemplo, equivale al patrón binario `1000`, que codifica A=R2 y B=R0. Los LEDs representan la concatenación de índices, no una salida de la ALU.
+
+### Captura y retención de valor y formato
+
+![Controles: ejecución y conservación del resultado y del modo](capturas/controles_resultado.png)
+
+**Imagen 2 suministrada por el equipo.** `execute`, `alu_result`, `result_q`, `binary_mode` y `binary_q` corresponden al registro de resultado de la misma simulación. En este intervalo se repiten varias capturas de un ciclo y cambios de entradas sin ejecución.
+
+Por ejemplo, `alu_result=34` hexadecimal se captura en `result_q` alrededor de **268 ns**. Después la entrada pasa a `3B`, pero el resultado permanece en `34` hasta la siguiente ejecución. Lo mismo ocurre con el formato: `binary_mode` puede cambiar mientras `binary_q` conserva el último modo capturado. Al activarse `execute`, valor y formato se actualizan juntos.
+
+Los buses de seis bits están en hexadecimal y contienen números con signo: `34` representa **−12** y `3B` representa **−5**, porque ambos patrones usan complemento a dos. Las cifras de la captura no deben leerse como enteros decimales positivos.
+
+### Alcance de las vistas
+
+Las dos ventanas son suficientes para explicar varios avances de los selectores, un retorno de dirección y varios ejemplos de captura y retención. No hace falta ampliar su duración para apreciar esos mecanismos. La ejecución completa recorre las 16 parejas dos veces y también verifica los indicadores y el almacenamiento del formato.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).

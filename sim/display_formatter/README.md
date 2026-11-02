@@ -70,10 +70,22 @@ Las comparaciones usan `!==` para detectar también valores desconocidos. En tot
 
 `value` se interpreta como decimal con signo y `segments` como hexadecimal de ocho cifras, separándolo en cuatro bytes. La tabla de patrones decimales es un arreglo del testbench; no se incluye como una señal única en el VCD.
 
-## Resultado y capturas pendientes
+## Captura y análisis
 
-Resultado verificado: **PASS FORMATTER: 64 valores decimales con signo y 16 patrones binarios**.
+![Formateador: cambio de decimal a binario y códigos de segmentos](capturas/formato_cambio_modo.png)
 
-Se añadirán las imágenes que aporte el equipo para relacionar ejemplos de `value`, el modo seleccionado y la descomposición del patrón de segmentos en cuatro caracteres.
+**Imagen 6 suministrada por el equipo.** `value`, `binary_mode`, `negative`, `magnitude`, `tens`, `units`, `segments` y `bits_expected` identifican la simulación del formateador. La ventana muestra aproximadamente **60–68 ns**, alrededor del cambio de representación.
+
+Antes de 64 ns, `binary_mode=0`. Los valores `1C`, `1D`, `1E` y `1F` están mostrados en hexadecimal y corresponden a **28, 29, 30 y 31**. `negative` permanece en cero; `magnitude` conserva el valor positivo; las decenas pasan de 2 a 3 y las unidades recorren 8, 9, 0 y 1. Los patrones de segmentos representan `0028`, `0029`, `0030` y `0031`.
+
+En **64 ns**, `binary_mode` sube a uno y `value` vuelve a cero. La salida pasa a codificar bits individuales: para los valores 0, 1, 2 y 3 se obtienen los caracteres `0000`, `0001`, `0010` y `0011`. En este tramo, `segments` coincide con `bits_expected`.
+
+La fila roja de `bits_expected` antes de 64 ns corresponde a una referencia auxiliar del testbench que todavía no se ha inicializado: solo se utiliza al comenzar las comprobaciones binarias. La salida `segments` ya tiene valores definidos, por lo que esos `X` de la referencia auxiliar no indican un fallo del formateador.
+
+### Alcance del intervalo
+
+La captura permite explicar bien el cambio de modo y los primeros patrones binarios, pero no muestra valores negativos ni el recorrido binario completo. Una ventana de **16–24 ns** mostraría ejemplos decimales negativos; otra de **64–80 ns** abarcaría los 16 patrones binarios. Una vista de 0–80 ns serviría como resumen de la secuencia completa.
+
+La verificación completa cubre los **64 valores decimales con signo y los 16 patrones binarios**. La imagen documenta únicamente la transición entre sus dos partes.
 
 [Índice de simulaciones](../README.md) · [Resumen del proyecto](../../README.md).
