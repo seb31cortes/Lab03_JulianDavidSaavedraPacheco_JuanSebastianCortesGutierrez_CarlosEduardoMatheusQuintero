@@ -8,13 +8,13 @@ Electrónica Digital II · Universidad Nacional de Colombia, sede Bogotá · 202
 | Juan Sebastián Cortés Gutiérrez | jcortesgu@unal.edu.co |
 | Carlos Eduardo Matheus Quintero | cmatheus@unal.edu.co |
 
-## Descripción y estado de la práctica
+## Descripción del sistema
 
-El proyecto integra una ALU de cuatro bits, un banco de cuatro registros, un selector de operandos y un display TM1637. Sigue la arquitectura modular de la guía **Lab03 – ALU + Banco de Registros + Diseño Modular** suministrada para la práctica.
+El proyecto integra una ALU de cuatro bits, un banco de cuatro registros, un selector de operandos y un display TM1637. Sigue la arquitectura modular de la guía **Lab03 – ALU + Banco de Registros + Diseño Modular**.
 
-**El diseño ya fue implementado en la FPGA y presentado presencialmente al profesor.** Los cinco videos de [evidencias/](evidencias/) documentan la explicación general y las pruebas de suma, resta, AND y OR. Esta entrega organiza esas evidencias, actualiza la documentación y reproduce las simulaciones.
+**El diseño ya fue implementado en la FPGA y presentado presencialmente al profesor.** Los cinco videos de [evidencias/](evidencias/) documentan la explicación general y las pruebas de suma, resta, AND y OR.
 
-Se conservan los módulos de [src/](src/) y las asignaciones de [constraints/zybo_z7.xdc](constraints/zybo_z7.xdc). En los testbenches solo se instrumentó la escritura de VCD: se añadieron los volcados que faltaban y se ajustaron las rutas para ejecutar desde `sim/`. El testbench de antirrebote utiliza el umbral real de 1.250.000 ciclos; se mantienen sus comprobaciones y las conexiones del diseño.
+El código Verilog se encuentra en [src/](src/) y las asignaciones de pines en [constraints/zybo_z7.xdc](constraints/zybo_z7.xdc). Los testbenches verifican los módulos y generan trazas VCD para el análisis de señales. La prueba de antirrebote utiliza el umbral de 1.250.000 ciclos, equivalente a 10 ms con un reloj de 125 MHz.
 
 ## Funcionamiento e interfaz
 
@@ -141,7 +141,7 @@ La integración carga **R0=5, R1=3, R2=10 y R3=15** y usa un reloj simulado de 4
 
 ### Capturas de GTKWave
 
-Los análisis de las diez imágenes suministradas por el equipo están en los README de [ALU](sim/alu/README.md#captura-y-análisis), [banco de registros](sim/reg_bank/README.md#captura-y-análisis), [controles](sim/controls/README.md#capturas-y-análisis), [antirrebote](sim/debouncer/README.md#captura-y-análisis), [formateador](sim/display_formatter/README.md#captura-y-análisis), [TM1637](sim/tm1637/README.md#captura-y-análisis) e [integración](sim/top/README.md#capturas-y-análisis).
+Las diez capturas de GTKWave se analizan en los README de [ALU](sim/alu/README.md#captura-y-análisis), [banco de registros](sim/reg_bank/README.md#captura-y-análisis), [controles](sim/controls/README.md#capturas-y-análisis), [antirrebote](sim/debouncer/README.md#captura-y-análisis), [formateador](sim/display_formatter/README.md#captura-y-análisis), [TM1637](sim/tm1637/README.md#captura-y-análisis) e [integración](sim/top/README.md#capturas-y-análisis).
 
 ![GTKWave: cuatro operaciones del sistema integrado](sim/top/capturas/top_operaciones.png)
 
@@ -167,34 +167,6 @@ En cada operación se cambiaron los **switches externos de selección**. El RGB 
 | Resta, ≈28,1 s | [Video](evidencias/02_resta/video.mp4) | [Procedimiento](evidencias/02_resta/README.md) | 15−1=14 → `0014`; 1−15=−14 → `-014` |
 | AND, ≈25,8 s | [Video](evidencias/03_and/video.mp4) | [Procedimiento](evidencias/03_and/README.md) | `1111 & 0001 = 0001` |
 | OR, ≈23,3 s | [Video](evidencias/04_or/video.mp4) | [Procedimiento](evidencias/04_or/README.md) | `1111 \| 0001 = 1111` |
-
-Los videos se copiaron íntegros, sin recortes ni recodificación. Se clasificaron por duración y por la descripción suministrada por el equipo.
-
-## Organización
-
-```text
-Avances Práctica 3/
-├── README.md
-├── src/                         13 módulos Verilog del diseño presentado
-├── constraints/zybo_z7.xdc      Pines conservados
-├── sim/
-│   ├── README.md                Índice y alcance de las simulaciones
-│   ├── alu/                     Testbench, VVP, VCD y explicación de la ALU
-│   ├── reg_bank/                Testbench, VVP, VCD y explicación del banco
-│   ├── controls/                Testbench, VVP, VCD y explicación de controles
-│   ├── debouncer/               Prueba con el umbral real de antirrebote
-│   ├── display_formatter/       Conversión decimal y binaria a segmentos
-│   ├── tm1637/                  Protocolo serial, ACK/NACK y capturas de simulación
-│   └── top/                     Integración completa y capturas de simulación
-└── evidencias/
-    ├── explicacion_general.mp4
-    ├── 01_suma/                 video.mp4 + README.md
-    ├── 02_resta/                video.mp4 + README.md
-    ├── 03_and/                  video.mp4 + README.md
-    └── 04_or/                   video.mp4 + README.md
-```
-
-Solo `src/*.v` y el XDC corresponden a síntesis; `sim/` contiene la verificación.
 
 ## Análisis de resultados
 

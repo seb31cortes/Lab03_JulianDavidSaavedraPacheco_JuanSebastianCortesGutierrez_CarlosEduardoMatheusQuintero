@@ -22,5 +22,3 @@ Se comprueba AND con **R0=15** (`1111`) y **R1=1** (`0001`).
 El display muestra **`0001`**, con el bit más significativo a la izquierda. AND produce uno solo si ambos bits de entrada son uno; únicamente el bit 0 cumple esta condición. Equivale a 1 decimal, representado aquí en binario.
 
 BTN3 guarda el valor y el modo binario; ambos se conservan hasta otra ejecución.
-
-Descripción basada en la demostración física informada por el equipo. Original: `WhatsApp Video 2026-11-01 at 4.54.32 PM (2).mp4`, copiado íntegramente como `video.mp4`.

@@ -74,7 +74,7 @@ Las comparaciones usan `!==` para detectar también valores desconocidos. En tot
 
 ![Formateador: cambio de decimal a binario y códigos de segmentos](capturas/formato_cambio_modo.png)
 
-**Imagen 6 suministrada por el equipo.** `value`, `binary_mode`, `negative`, `magnitude`, `tens`, `units`, `segments` y `bits_expected` identifican la simulación del formateador. La ventana muestra aproximadamente **60–68 ns**, alrededor del cambio de representación.
+La captura relaciona el valor `value` y el modo `binary_mode` con el signo `negative`, la magnitud `magnitude`, las cifras `tens/units` y los patrones `segments/bits_expected`. La ventana muestra aproximadamente **60–68 ns**, alrededor del cambio de representación.
 
 Antes de 64 ns, `binary_mode=0`. Los valores `1C`, `1D`, `1E` y `1F` están mostrados en hexadecimal y corresponden a **28, 29, 30 y 31**. `negative` permanece en cero; `magnitude` conserva el valor positivo; las decenas pasan de 2 a 3 y las unidades recorren 8, 9, 0 y 1. Los patrones de segmentos representan `0028`, `0029`, `0030` y `0031`.
 

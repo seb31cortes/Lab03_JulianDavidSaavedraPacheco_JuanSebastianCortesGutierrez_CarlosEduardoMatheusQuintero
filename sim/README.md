@@ -1,6 +1,6 @@
 # Simulaciones del laboratorio 03
 
-Cada subcarpeta reúne el testbench Verilog, su ejecutable de Icarus Verilog, la traza VCD y una explicación de las entradas, el procesamiento, las salidas y las comprobaciones de la prueba. Los módulos del diseño se conservan en [src/](../src/).
+Cada subcarpeta reúne el testbench Verilog, su ejecutable de Icarus Verilog, la traza VCD y una explicación de las entradas, el procesamiento, las salidas y las comprobaciones de la prueba. Los módulos del diseño están en [src/](../src/).
 
 | Simulación | Qué comprueba | Archivos |
 |---|---|---|
@@ -22,8 +22,8 @@ Las pruebas de ALU y formateador son combinacionales. Banco, controles y antirre
 
 ## Capturas de GTKWave
 
-Los siete README de simulación incorporan las **diez capturas suministradas por el equipo**, clasificadas por sus señales y por `stage` en la integración. Cada imagen se acompaña de la interpretación de lo que efectivamente muestra y del alcance de su intervalo temporal.
+Las **diez capturas de GTKWave** muestran las señales de cada testbench y las etapas identificadas por `stage` en la integración. Cada README explica los valores observados y el alcance del intervalo temporal mostrado.
 
-Las imágenes anteriores se reemplazaron por estas capturas. Los buses que aparecen en hexadecimal se interpretan explícitamente en cada análisis; una ventana parcial no sustituye las comprobaciones de todo el testbench. En ALU, banco, formateador y TM1637 se indican los tramos adicionales que permitirían mostrar el resto de la prueba. En antirrebote y retención interesa ampliar eventos que quedan comprimidos en una vista general.
+Los buses que aparecen en hexadecimal se interpretan explícitamente en cada análisis; una ventana parcial no sustituye las comprobaciones de todo el testbench. En ALU, banco, formateador y TM1637 se indican los tramos adicionales que permitirían mostrar el resto de la prueba. En antirrebote y retención interesa ampliar eventos que quedan comprimidos en una vista general.
 
 [Volver al README principal](../README.md).

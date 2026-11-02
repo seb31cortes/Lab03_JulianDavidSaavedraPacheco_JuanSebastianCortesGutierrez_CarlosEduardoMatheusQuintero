@@ -19,5 +19,3 @@ Se comprueba la resta en ambos órdenes con **R0=15** y **R1=1**, incluyendo un 
 | A=R1=1, B=R0=15 | 1 − 15 = **−14** | **`-014`** |
 
 La resta depende del orden A/B. Los operandos son valores sin signo; el resultado de seis bits con signo representa −14 correctamente. Cambiar la pareja no actualiza por sí solo el display: BTN3 realiza la nueva captura.
-
-Descripción basada en la demostración física informada por el equipo. Original: `WhatsApp Video 2026-11-01 at 4.54.32 PM (1).mp4`, copiado íntegramente como `video.mp4`.

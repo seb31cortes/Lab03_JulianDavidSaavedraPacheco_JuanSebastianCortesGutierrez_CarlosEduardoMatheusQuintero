@@ -63,7 +63,7 @@ Una captura de escritura debe relacionar el cambio del registro de destino con u
 
 ![Banco: escritura de R0 y selección de los puertos de lectura](capturas/banco_escritura_r0.png)
 
-**Imagen 4 suministrada por el equipo.** `write_enable`, `address`, `data_in`, las dos direcciones `sel_a/sel_b`, las salidas `qa/qb` y los cuatro registros internos identifican la prueba del banco. La ventana muestra aproximadamente **0–500 ns** y mantiene `address=00`, de modo que las escrituras visibles se dirigen a **R0**, llamado `reg_a` en el módulo.
+La captura relaciona la habilitación `write_enable`, la dirección `address` y el dato `data_in` con los registros almacenados y las lecturas seleccionadas mediante `sel_a/sel_b` en `qa/qb`. La ventana muestra aproximadamente **0–500 ns** y mantiene `address=00`, de modo que las escrituras visibles se dirigen a **R0**, llamado `reg_a` en el módulo.
 
 El primer pulso escribe cero sobre el estado inicial cero, por lo que no produce un cambio numérico visible. Después se observa que `reg_a` pasa a **1 cerca de 300 ns** y a **2 cerca de 460 ns**, coincidiendo con subidas del reloj mientras la habilitación está activa. `reg_b`, `reg_c` y `reg_d` permanecen en cero.
 

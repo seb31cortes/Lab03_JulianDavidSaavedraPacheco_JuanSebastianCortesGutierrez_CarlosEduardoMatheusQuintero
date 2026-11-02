@@ -79,7 +79,7 @@ Para leer los números negativos, `alu_result` y `result_q` se interpretan como 
 
 ![Controles: avance de dirección, pareja, LEDs y RGB](capturas/controles_seleccion.png)
 
-**Imagen 1 suministrada por el equipo.** Las entradas `next_addr` y `next_pair` y las salidas `addr`, `a`, `b`, `led` y `rgb` identifican la parte de selección de `tb_controls`. La ventana, de unos **250–760 ns**, contiene varios pulsos y permite distinguir sus efectos.
+La captura relaciona las habilitaciones `next_addr` y `next_pair` con la dirección `addr`, la pareja `a,b` y los indicadores `led,rgb`. La ventana, de unos **250–760 ns**, contiene varios pulsos y permite distinguir sus efectos.
 
 Con cada habilitación y la siguiente subida de reloj, `addr` avanza por `00`, `01`, `10` y `11`. El RGB sigue esa dirección: `100` rojo, `010` verde, `001` azul y `111` blanco. El retorno a `00` restablece el rojo.
 
@@ -89,7 +89,7 @@ La pareja avanza con B como índice rápido. Al pasar de `a=01,b=11` a `a=10,b=0
 
 ![Controles: ejecución y conservación del resultado y del modo](capturas/controles_resultado.png)
 
-**Imagen 2 suministrada por el equipo.** `execute`, `alu_result`, `result_q`, `binary_mode` y `binary_q` corresponden al registro de resultado de la misma simulación. En este intervalo se repiten varias capturas de un ciclo y cambios de entradas sin ejecución.
+La captura muestra cómo `execute` controla el almacenamiento de `alu_result` y `binary_mode` en `result_q` y `binary_q`. En este intervalo se repiten varias capturas de un ciclo y cambios de entradas sin ejecución.
 
 Por ejemplo, `alu_result=34` hexadecimal se captura en `result_q` alrededor de **268 ns**. Después la entrada pasa a `3B`, pero el resultado permanece en `34` hasta la siguiente ejecución. Lo mismo ocurre con el formato: `binary_mode` puede cambiar mientras `binary_q` conserva el último modo capturado. Al activarse `execute`, valor y formato se actualizan juntos.
 

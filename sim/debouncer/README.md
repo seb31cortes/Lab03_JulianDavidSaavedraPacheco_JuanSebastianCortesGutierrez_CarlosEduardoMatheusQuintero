@@ -68,7 +68,7 @@ El VCD guarda estas cuatro señales. El reloj rápido, las etapas de sincronizac
 
 ![Antirrebote: entrada del botón, nivel aceptado y cuenta de pulsaciones](capturas/antirrebote_general.png)
 
-**Imagen 5 suministrada por el equipo.** Las cuatro señales `btn`, `stable`, `pulse` y `pulses` identifican la prueba independiente de antirrebote. La vista abarca varias decenas de milisegundos y llega aproximadamente a **80 ms**.
+La captura compara la entrada `btn`, el nivel filtrado `stable`, el pulso `pulse` y el contador `pulses`. La vista abarca varias decenas de milisegundos y llega aproximadamente a **80 ms**.
 
 La pulsación que comienza alrededor de **20 ms** se acepta cerca de **30 ms**, de acuerdo con el umbral de 10 ms. En ese momento aumenta `stable` y la cuenta `pulses` pasa de 0 a 1. Mantener el botón pulsado no produce más incrementos. El intento de liberación entre aproximadamente 40 y 50 ms no alcanza el umbral; la liberación posterior sí prepara el circuito para otra pulsación.
 

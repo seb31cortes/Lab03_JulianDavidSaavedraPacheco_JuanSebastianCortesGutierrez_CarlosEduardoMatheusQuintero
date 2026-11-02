@@ -75,7 +75,7 @@ Estas siete señales son las incluidas en el VCD. El reloj interno `clk` y los e
 
 ![TM1637: actualización del patrón recibido e inyección de NACK](capturas/tm1637_actualizacion_y_nack.png)
 
-**Imagen 7 suministrada por el equipo.** Las señales `segments`, `received`, `frames`, `ack`, `ack_err`, `tm_clk` y `tm_dio` identifican la prueba del driver. La ventana comprende aproximadamente **1,4–2,45 ms** y muestra la finalización de la tercera trama y el comienzo de la cuarta.
+La captura muestra los patrones `segments/received`, el contador `frames`, las señales de reconocimiento `ack/ack_err` y las líneas seriales `tm_clk/tm_dio`. La ventana comprende aproximadamente **1,4–2,45 ms** y muestra la finalización de la tercera trama y el comienzo de la cuarta.
 
 Al principio, la entrada `segments` ya vale `3F063F06`, mientras `received` conserva `063F063F`. Son patrones de segmentos para `0101` y `1010`, respectivamente. Cerca de **2,020 ms**, la recepción de los cuatro bytes de datos termina y `received` pasa al patrón nuevo. El contador `frames` aumenta de 2 a 3 alrededor de **2,130 ms**, después de recibir también el comando de control del display. La actualización del dato recibido y el cierre de la trama son eventos distintos.
 

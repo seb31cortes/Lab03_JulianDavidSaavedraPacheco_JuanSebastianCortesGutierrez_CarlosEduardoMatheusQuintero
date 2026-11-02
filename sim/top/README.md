@@ -138,7 +138,7 @@ La traza selecciona estas señales y omite el reloj rápido, los contadores de a
 
 ![Integración: carga secuencial de los cuatro registros](capturas/top_carga_registros.png)
 
-**Imagen 8 suministrada por el equipo.** La combinación de `stage`, los switches de datos, los botones, la dirección de escritura y los cuatro registros identifica el ensayo de carga del sistema completo. En las primeras decenas de microsegundos se pasa del arranque (`stage=00`) a la carga (`stage=01`).
+La captura muestra cómo los switches de datos y los botones controlan la dirección de escritura y el contenido de los cuatro registros. En las primeras decenas de microsegundos se pasa del arranque (`stage=00`) a la carga (`stage=01`).
 
 Los switches `sw` toman **5, 3, A y F**, que corresponden a los valores decimales **5, 3, 10 y 15**. `data_sw` sigue esos cambios después de la sincronización. Las pulsaciones de escritura y avance hacen que `wr_addr` recorra `00`, `01`, `10` y `11`, mientras `reg_a`, `reg_b`, `reg_c` y `reg_d` almacenan cada dato y lo conservan durante las cargas siguientes.
 
@@ -148,7 +148,7 @@ Los switches `sw` toman **5, 3, A y F**, que corresponden a los valores decimale
 
 ![Integración: suma, resta, AND y OR sobre A igual a 5 y B igual a 3](capturas/top_operaciones.png)
 
-**Imagen 9 suministrada por el equipo.** `stage=02`, `sel_a=00` y `sel_b=01` identifican el ensayo sobre **A=R0=5 y B=R1=3**. El selector externo y su versión sincronizada recorren `00`, `01`, `10` y `11`.
+En `stage=02`, `sel_a=00` y `sel_b=01` seleccionan **A=R0=5 y B=R1=3**. El selector externo y su versión sincronizada recorren `00`, `01`, `10` y `11`.
 
 | Código observado | Operación | `alu_out` y `result_q` en hexadecimal | Significado | `binary_q` |
 |---|---|---|---|---|
@@ -165,7 +165,7 @@ La ventana de varios milisegundos incluye las cuatro operaciones y sus actualiza
 
 ![Integración: cambios de operandos y operación con conservación del resultado](capturas/top_retencion.png)
 
-**Imagen 10 suministrada por el equipo.** La ventana de aproximadamente **96,5–100,4 ms** incluye el final del recorrido de parejas (`stage=03`), la retención tras escritura (`04`), el botón mantenido (`05`) y el comienzo de `07`. La etapa `06` también ocurre en ese intervalo, pero es demasiado breve para leerla claramente con esta escala.
+La ventana de aproximadamente **96,5–100,4 ms** incluye el final del recorrido de parejas (`stage=03`), la retención tras escritura (`04`), el botón mantenido (`05`) y el comienzo de `07`. La etapa `06` también ocurre en ese intervalo, pero es demasiado breve para leerla claramente con esta escala.
 
 En `stage=04`, R0 se reescribe y cambian la pareja y la operación. `alu_out` termina en `13` hexadecimal, equivalente a **19 decimal**, mientras `result_q` conserva `05` y el modo binario anterior. El cálculo combinacional cambia, pero el resultado almacenado sigue siendo el de la última ejecución.
 

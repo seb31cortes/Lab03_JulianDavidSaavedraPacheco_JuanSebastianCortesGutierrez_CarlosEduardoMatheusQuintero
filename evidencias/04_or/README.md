@@ -22,5 +22,3 @@ Se comprueba OR con **R0=15** (`1111`) y **R1=1** (`0001`), manteniendo los valo
 El display muestra **`1111`**, equivalente a **15 decimal**. OR produce uno si al menos uno de los bits de entrada es uno. Como R0 contiene cuatro unos, todos los bits del resultado quedan en uno.
 
 Se muestran cuatro bits, con el más significativo a la izquierda. Valor y modo se conservan hasta una nueva ejecución con BTN3.
-
-Descripción basada en la demostración física informada por el equipo. Original: `WhatsApp Video 2026-11-01 at 4.54.32 PM (3).mp4`, copiado íntegramente como `video.mp4`.

@@ -55,7 +55,7 @@ En una vista ampliada debe verse que un cambio de entradas produce el resultado 
 
 ![ALU: suma y comparación con el resultado esperado](capturas/alu_suma.png)
 
-**Imagen 3 suministrada por el equipo.** Las señales `a[3:0]`, `b[3:0]`, `sel[1:0]`, `out[5:0]` y `expected[5:0]` identifican el testbench de la ALU. La ventana comprende aproximadamente los primeros **500 ns** y mantiene `sel=00`, por lo que muestra la **suma**.
+La captura muestra los operandos `a[3:0]` y `b[3:0]`, el selector `sel[1:0]`, la salida `out[5:0]` y la referencia `expected[5:0]`. La ventana comprende aproximadamente los primeros **500 ns** y mantiene `sel=00`, por lo que muestra la **suma**.
 
 `b` recorre los valores hexadecimales `0` a `F` y después vuelve a cero mientras `a` avanza. Las filas `out` y `expected` coinciden en los casos visibles. Cuando A=0, la salida reproduce B; con A=1 y B=`F`, el resultado es `10` hexadecimal, equivalente a **16 decimal**. Ese resultado muestra que la salida conserva el acarreo en su ancho de seis bits.
 

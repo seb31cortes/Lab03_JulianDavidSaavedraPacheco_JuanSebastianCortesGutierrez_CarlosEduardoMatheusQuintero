@@ -17,5 +17,3 @@ Se comprueba la carga de dos registros y la suma en la ALU de la FPGA.
 **15 + 1 = 16**. El display usa decimal y muestra **`0016`**. Los operandos tienen cuatro bits, pero el resultado tiene seis bits con signo; por eso la suma no se recorta a cuatro bits.
 
 El RGB indica el destino de escritura; los LEDs codifican los índices A/B. El resultado y el formato quedan guardados hasta otra ejecución con BTN3.
-
-Descripción basada en la demostración física informada por el equipo. Original: `WhatsApp Video 2026-11-01 at 4.54.32 PM.mp4`, copiado íntegramente como `video.mp4`.
