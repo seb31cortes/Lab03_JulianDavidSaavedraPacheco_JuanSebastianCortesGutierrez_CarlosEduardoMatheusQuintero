@@ -12,7 +12,7 @@ Electrónica Digital II · Universidad Nacional de Colombia, sede Bogotá · 202
 
 El proyecto integra una ALU de cuatro bits, un banco de cuatro registros, un selector de operandos y un display TM1637. Sigue la arquitectura modular de la guía **Lab03 – ALU + Banco de Registros + Diseño Modular**.
 
-**El diseño ya fue implementado en la FPGA y presentado presencialmente al profesor.** Los cinco videos de [evidencias/](evidencias/) documentan la explicación general y las pruebas de suma, resta, AND y OR.
+Los cinco videos de [evidencias/](evidencias/) documentan la explicación general y las pruebas de suma, resta, AND y OR.
 
 El código Verilog se encuentra en [src/](src/) y las asignaciones de pines en [constraints/zybo_z7.xdc](constraints/zybo_z7.xdc). Los testbenches verifican los módulos y generan trazas VCD para el análisis de señales. La prueba de antirrebote utiliza el umbral de 1.250.000 ciclos, equivalente a 10 ms con un reloj de 125 MHz.
 
